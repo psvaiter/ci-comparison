@@ -27,9 +27,7 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 version = "2021.2"
 
 project {
-
-    vcsRoot(HttpsGithubComPsvaiterCiComparisonRefsHeadsMain)
-
+    vcsRoot(CiComparisonVcs)
     buildType(Build)
 }
 
@@ -37,7 +35,7 @@ object Build : BuildType({
     name = "Build"
 
     vcs {
-        root(HttpsGithubComPsvaiterCiComparisonRefsHeadsMain)
+        root(CiComparisonVcs)
     }
 
     triggers {
@@ -46,8 +44,8 @@ object Build : BuildType({
     }
 })
 
-object HttpsGithubComPsvaiterCiComparisonRefsHeadsMain : GitVcsRoot({
-    name = "https://github.com/psvaiter/ci-comparison#refs/heads/main"
+object CiComparisonVcs : GitVcsRoot({
+    name = "CI Comparison"
     url = "https://github.com/psvaiter/ci-comparison"
     branch = "refs/heads/main"
     branchSpec = "refs/heads/*"
