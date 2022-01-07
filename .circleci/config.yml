@@ -12,7 +12,7 @@ jobs:
       - checkout
       - run: terraform init
       - run: terraform validate
-      - run: terraform plan -o tfplan
+      - run: terraform plan -out tfplan
   tf-apply:
     docker:
       - image: hashicorp/terraform:1.0.11
