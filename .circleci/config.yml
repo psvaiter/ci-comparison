@@ -9,10 +9,13 @@ jobs:
     resource_class: medium
     steps:
       - checkout
-      - run: cd terraform/dev
-      - run: terraform init
-      - run: terraform validate
-      - run: terraform plan -out tfplan
+      - run:
+          name: "terraform plan"
+          working_directory: terraform/dev
+          command: |
+            terraform init
+            terraform validate
+            terraform plan -out tfplan
   tf-apply:
     docker:
       - image: hashicorp/terraform:1.0.11
