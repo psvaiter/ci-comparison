@@ -7,9 +7,9 @@ jobs:
     docker:
       - image: hashicorp/terraform:1.0.11
     resource_class: medium
-    working_directory: terraform/dev
     steps:
       - checkout
+      - run: cd terraform/dev
       - run: terraform init
       - run: terraform validate
       - run: terraform plan -out tfplan
@@ -17,9 +17,9 @@ jobs:
     docker:
       - image: hashicorp/terraform:1.0.11
     resource_class: medium
-    working_directory: terraform/dev
     steps:
       - checkout
+      - run: cd terraform/dev
       - run: terraform init
       - run: terraform apply -input=false -auto-approve tfplan
 
