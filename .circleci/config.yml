@@ -11,7 +11,7 @@ jobs:
       - checkout
       - run:
           name: "Start Docker"
-          command: sudo service start docker
+          command: service start docker
       - run:
           name: "terraform plan"
           working_directory: terraform/dev
