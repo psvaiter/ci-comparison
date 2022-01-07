@@ -38,6 +38,20 @@ object Build : BuildType({
         root(CiComparisonVcs)
     }
 
+    steps {
+        script {
+            name = "Terraform Plan (dev)"
+            workingDir = "terraform/dev"
+            scriptContent = """
+                terraform init
+                terraform validate
+                terraform plan
+            """.trimIndent()
+            dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
+            dockerImage = "hashicorp/terraform:1.0.11"
+        }
+    }
+
     triggers {
         vcs {
         }
