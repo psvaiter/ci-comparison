@@ -10,6 +10,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: "Start Docker"
+          command: systemctl start docker
+      - run:
           name: "terraform plan"
           working_directory: terraform/dev
           command: |
