@@ -12,9 +12,8 @@ jobs:
       - run:
           name: "Install and start Docker"
           command: |
-            apk add docker openrc
             apk update
-            /sbin/service docker start
+            apk add docker openrc
             /sbin/service docker status
       - run:
           name: "terraform plan"
