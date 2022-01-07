@@ -10,8 +10,12 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Start Docker"
-          command: service start docker
+          name: "Install and start Docker"
+          command: |
+            apk add docker
+            apk update
+            service docker start
+            service docker status
       - run:
           name: "terraform plan"
           working_directory: terraform/dev
