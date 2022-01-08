@@ -30,6 +30,10 @@ jobs:
             terraform init
             terraform validate
             terraform plan -out tfplan
+      - persist_to_workspace:
+          root: .
+          paths:
+            - terraform/<<parameters.target-env>>
   tf-apply:
     docker:
       - image: hashicorp/terraform:1.0.11
@@ -40,11 +44,12 @@ jobs:
         default: dev
     steps:
       - checkout
+      - attach_workspace:
+          at: .
       - run:
           name: "terraform apply"
           working_directory: terraform/<<parameters.target-env>>
           command: |
-            terraform init
             terraform apply -input=false -auto-approve tfplan
 
 workflows:
