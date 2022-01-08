@@ -11,7 +11,10 @@ jobs:
       - checkout
       - run:
           name: "Start Docker"
-          command: docker start
+          command: |
+            apk add docker
+            addgroup username docker
+            service docker start
       - run:
           name: "terraform plan"
           working_directory: terraform/dev
