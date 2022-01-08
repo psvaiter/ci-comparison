@@ -6,7 +6,7 @@ This project is intended to compare CI pipeline as code from different vendors.
 
 - ❌ git clone depth specification
 - ❌ run pipeline based on changes of a specific fileset
-    - possible (but complex) with a setup workflow that always run and path-filtering orb
+    - 🟡 possible (but complex) with a setup workflow that always run and path-filtering orb
 - ✅ reuse steps (with commands)
 - ✅ reuse jobs (customized with parameters)
 - ✅ conditional steps
