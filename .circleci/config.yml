@@ -14,11 +14,12 @@ jobs:
       - run:
           name: "Install tfswitch"
           command: |
-            curl -L https://raw.githubusercontent.com/warrensbox/terraform-switcher/release/install.sh | bash
+            curl -L https://raw.githubusercontent.com/warrensbox/terraform-switcher/release/install.sh
+            ./install.sh -b $HOME/.bin
       - run:
           name: "Install Terraform ${TF_VERSION}"
           command: |
-            tfswitch ${TF_VERSION}
+            $HOME/.bin/tfswitch ${TF_VERSION}
       - run:
           name: "terraform plan"
           working_directory: terraform/dev
