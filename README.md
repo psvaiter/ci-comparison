@@ -6,3 +6,6 @@ This project is intended to compare CI pipeline as code from different vendors.
 
 - ❌ git clone depth specification
 - ❌ filter by code changed path
+- ✅ manual approval
+- ❌ explicit rejection (user has to cancel workflow instead)
+- ❌ abandon release
