@@ -54,25 +54,39 @@ jobs:
             terraform apply -input=false -auto-approve tfplan
 
 workflows:
-  terraform-workflow:
+  terraform-dev-workflow:
     jobs:
       - tf-plan:
-          name: tf-plan-<<matrix.target-env>>
-          matrix:
-            parameters:
-              target-env: ["dev", "prod"]
+          target-env: dev
       - tf-approval:
           type: approval
-          name: tf-approval-<<matrix.target-env>>
-          matrix:
-            parameters:
-              target-env: ["dev", "prod"]
           requires:
-            - tf-plan-<<matrix.target-env>>
+            - tf-plan
+          filters:
+            branches:
+              only: main
       - tf-apply:
-          name: tf-apply-<<matrix.target-env>>
-          matrix:
-            parameters:
-              target-env: ["dev", "prod"]
+          target-env: dev
           requires:
-            - tf-approval-<<matrix.target-env>>
+            - tf-approval
+          filters:
+            branches:
+              only: main
+  terraform-prod-workflow:
+    jobs:
+      - tf-plan:
+          target-env: prod
+      - tf-approval:
+          type: approval
+          requires:
+            - tf-plan
+          filters:
+            branches:
+              only: main
+      - tf-apply:
+          target-env: prod
+          requires:
+            - tf-approval
+          filters:
+            branches:
+              only: main
