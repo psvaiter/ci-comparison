@@ -5,16 +5,15 @@ version: 2.1
 jobs:
   tf-plan:
     docker:
-      - image: hashicorp/terraform:1.0.11
+      - image: cimg/base:stable-20.04
     resource_class: medium
     steps:
       - checkout
       - run:
-          name: "Start Docker"
+          name: "Install Terraform"
           command: |
-            apk add docker
-            addgroup username docker
-            service docker start
+            curl -L https://raw.githubusercontent.com/warrensbox/terraform-switcher/release/install.sh | bash
+            tfswitch 1.0.11
       - run:
           name: "terraform plan"
           working_directory: terraform/dev
