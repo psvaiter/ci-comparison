@@ -44,6 +44,7 @@ jobs:
         default: dev
     steps:
       - checkout
+      - prepare-docker-environment
       - attach_workspace:
           at: .
       - run:
