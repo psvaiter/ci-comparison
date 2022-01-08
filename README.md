@@ -2,6 +2,24 @@
 
 This project is intended to compare CI pipeline as code from different vendors.
 
+### Bitbucket Pipelines
+
+- ❌ support multiple configuration files
+- ✅ git clone depth specification
+- ✅ run pipeline based on changes of a specific fileset
+- ⬜ reuse steps
+- ⬜ reuse jobs (customized with parameters)
+- ❌ conditional steps
+- ✅ manual approval / trigger
+    - ❌ selected approvers
+    - ❌ explicit rejection
+- ❌ abandon release
+- ❌ environment variables separated by stage
+    - separated by deployment environment
+    - only one step can be marked as deployment for a sepecific environment
+- ✅ dedicated pull request configuration
+- ❌ status badges
+
 ### CircleCI
 
 - ❌ support multiple configuration files
@@ -12,7 +30,12 @@ This project is intended to compare CI pipeline as code from different vendors.
 - ✅ reuse steps (with commands)
 - ✅ reuse jobs (customized with parameters)
 - ✅ conditional steps
-- ✅ manual approval
-- ❌ explicit rejection (user has to cancel workflow instead)
+- ✅ manual approval / trigger
+    - ❌ selected approvers
+    - ❌ explicit rejection
 - ❌ abandon release
 - ❌ environment variables separated by stage (there's not such a concept in CircleCI)
+    - focused on secret only as values cannot be read nor edited
+    - non-sensitive values should be versioned along pipeline config
+- ❌ dedicated pull request configuration (all commits trigger the workflows and a project configuration can be enabled to trigger only for branches with pull requests open)
+- ✅ status badges
