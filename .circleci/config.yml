@@ -1,0 +1,98 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine.
+# See: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+
+commands:
+  prepare-docker-environment:
+    description: "To run before using Terraform docker provider."
+    steps:
+      - setup_remote_docker
+      - run: 
+          name: Instal Docker client
+          command: apk add docker-cli
+
+jobs:
+  tf-plan:
+    docker:
+      - image: hashicorp/terraform:1.0.11
+    resource_class: medium
+    parameters:
+      target-env:
+        type: string
+        default: dev
+    steps:
+      - checkout
+      - prepare-docker-environment
+      - run:
+          name: "terraform plan"
+          working_directory: terraform/<<parameters.target-env>>
+          command: |
+            terraform init
+            terraform validate
+            terraform plan -out tfplan
+      - persist_to_workspace:
+          root: .
+          paths:
+            - terraform/<<parameters.target-env>>
+  tf-apply:
+    docker:
+      - image: hashicorp/terraform:1.0.11
+    resource_class: medium
+    parameters:
+      target-env:
+        type: string
+        default: dev
+    steps:
+      - checkout
+      - prepare-docker-environment
+      - attach_workspace:
+          at: .
+      - run:
+          name: "terraform apply"
+          working_directory: terraform/<<parameters.target-env>>
+          command: |
+            terraform apply -input=false -auto-approve tfplan
+
+workflows:
+  terraform-dev:
+    jobs:
+      - tf-plan:
+          name: tf-plan-dev
+          target-env: dev
+      - tf-approval:
+          type: approval
+          name: tf-approval-dev
+          requires:
+            - tf-plan-dev
+          filters:
+            branches:
+              only: main
+      - tf-apply:
+          name: tf-apply-dev
+          target-env: dev
+          requires:
+            - tf-approval-dev
+          filters:
+            branches:
+              only: main
+  terraform-prod:
+    jobs:
+      - tf-plan:
+          name: tf-plan-prod
+          target-env: prod
+      - tf-approval:
+          type: approval
+          name: tf-approval-prod
+          requires:
+            - tf-plan-prod
+          filters:
+            branches:
+              only: main
+      - tf-apply:
+          name: tf-apply-prod
+          target-env: prod
+          requires:
+            - tf-approval-prod
+          filters:
+            branches:
+              only: main
