@@ -15,6 +15,7 @@ jobs:
           name: "Install tfswitch"
           command: |
             wget https://raw.githubusercontent.com/warrensbox/terraform-switcher/release/install.sh
+            chmod 755 install.sh
             ./install.sh -b $HOME/.bin
       - run:
           name: "Install Terraform ${TF_VERSION}"
