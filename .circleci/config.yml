@@ -13,8 +13,9 @@ jobs:
           name: "Install and start Docker"
           command: |
             apk update
-            apk add docker openrc
-            /sbin/service docker status
+            apk add docker
+            rc-update add docker boot
+            service docker start
       - run:
           name: "terraform plan"
           working_directory: terraform/dev
