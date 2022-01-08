@@ -16,12 +16,16 @@ jobs:
     docker:
       - image: hashicorp/terraform:1.0.11
     resource_class: medium
+    parameters:
+      targe-env:
+        type: string
+        default: dev
     steps:
       - checkout
       - prepare-docker-environment
       - run:
           name: "terraform plan"
-          working_directory: terraform/dev
+          working_directory: terraform/<<parameters.target-env>>
           command: |
             terraform init
             terraform validate
@@ -30,27 +34,39 @@ jobs:
     docker:
       - image: hashicorp/terraform:1.0.11
     resource_class: medium
+    parameters:
+      targe-env:
+        type: string
+        default: dev
     steps:
       - checkout
-      - run: cd terraform/dev
-      - run: terraform init
-      - run: terraform apply -input=false -auto-approve tfplan
+      - run:
+          name: "terraform apply"
+          working_directory: terraform/<<parameters.target-env>>
+          command: |
+            terraform init
+            terraform apply -input=false -auto-approve tfplan
 
 workflows:
   terraform-workflow:
     jobs:
-      - tf-plan
+      - tf-plan:
+          name: tf-plan-<<matrix.target-env>>
+          matrix:
+            parameters:
+              target-env: ["dev", "prod"]
       - tf-approval:
           type: approval
+          name: tf-approval-<<matrix.target-env>>
+          matrix:
+            parameters:
+              target-env: ["dev", "prod"]
           requires:
-            - tf-plan
-          filters:
-            branches:
-              only: main
+            - tf-plan-<<matrix.target-env>>
       - tf-apply:
+          name: tf-apply-<<matrix.target-env>>
+          matrix:
+            parameters:
+              target-env: ["dev", "prod"]
           requires:
-            - tf-approval
-          filters:
-            branches:
-              only: main
-      
+            - tf-approval-<<matrix.target-env>>
