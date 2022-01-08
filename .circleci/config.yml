@@ -2,6 +2,15 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+commands:
+  prepare-docker-environment:
+    description: "To run before using Terraform docker provider."
+    steps:
+      - setup_remote_docker
+      - run: 
+          name: Instal Docker client
+          command: apk add docker-cli
+
 jobs:
   tf-plan:
     docker:
@@ -9,10 +18,7 @@ jobs:
     resource_class: medium
     steps:
       - checkout
-      - setup_remote_docker
-      - run: 
-          name: Instal Docker client
-          command: apk add docker-cli
+      - prepare-docker-environment
       - run:
           name: "terraform plan"
           working_directory: terraform/dev
