@@ -54,7 +54,7 @@ jobs:
             terraform apply -input=false -auto-approve tfplan
 
 workflows:
-  terraform-dev-workflow:
+  terraform-dev:
     jobs:
       - tf-plan:
           name: tf-plan-dev
@@ -75,7 +75,7 @@ workflows:
           filters:
             branches:
               only: main
-  terraform-prod-workflow:
+  terraform-prod:
     jobs:
       - tf-plan:
           name: tf-plan-prod
