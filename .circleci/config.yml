@@ -58,6 +58,9 @@ workflows:
     jobs:
       - tf-plan:
           name: tf-plan-dev
+          context:
+            - dev
+            - proj-data-dev
           target-env: dev
       - tf-approval:
           type: approval
@@ -69,6 +72,9 @@ workflows:
               only: main
       - tf-apply:
           name: tf-apply-dev
+          context:
+            - dev
+            - proj-data-dev
           target-env: dev
           requires:
             - tf-approval-dev
@@ -79,6 +85,9 @@ workflows:
     jobs:
       - tf-plan:
           name: tf-plan-prod
+          context:
+            - prod
+            - proj-data-prod
           target-env: prod
       - tf-approval:
           type: approval
@@ -90,6 +99,9 @@ workflows:
               only: main
       - tf-apply:
           name: tf-apply-prod
+          context:
+            - prod
+            - proj-data-prod
           target-env: prod
           requires:
             - tf-approval-prod
